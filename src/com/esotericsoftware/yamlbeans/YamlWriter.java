@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Iterator;
 
 import com.esotericsoftware.yamlbeans.Beans.Property;
 import com.esotericsoftware.yamlbeans.YamlConfig.WriteClassName;
@@ -43,6 +44,8 @@ import com.esotericsoftware.yamlbeans.parser.MappingStartEvent;
 import com.esotericsoftware.yamlbeans.parser.ScalarEvent;
 import com.esotericsoftware.yamlbeans.parser.SequenceStartEvent;
 import com.esotericsoftware.yamlbeans.scalar.ScalarSerializer;
+
+import org.checkerframework.checker.determinism.qual.*;
 
 /** Serializes Java objects as YAML.
  * @author <a href="mailto:misc@n4te.com">Nathan Sweet</a> */
@@ -184,7 +187,7 @@ public class YamlWriter {
 			}
 		}
 
-		for (Entry<Class, ScalarSerializer> entry : config.scalarSerializers.entrySet()) {
+		for (@Det Entry<@Det Class, @Det ScalarSerializer> entry : config.scalarSerializers.entrySet()) {
 			if (entry.getKey().isAssignableFrom(valueClass)) {
 				ScalarSerializer serializer = entry.getValue();
 				emitter.emit(new ScalarEvent(null, tag, new boolean[] {tag == null, tag == null}, serializer.write(object), (char)0));
@@ -218,7 +221,7 @@ public class YamlWriter {
 
 		if (object instanceof Map) {
 			emitter.emit(new MappingStartEvent(anchor, tag, !showTag, false));
-			for (Object item : ((Map)object).entrySet()) {
+			for (@Det Object item : ((@Det Map)object).entrySet()) {
 				Entry entry = (Entry)item;
 				writeValue(entry.getKey(), null, null, null);
 				if (isRoot && !config.writeConfig.writeRootElementTags) elementType = entry.getValue().getClass();
@@ -252,7 +255,7 @@ public class YamlWriter {
 			}
 		}
 
-		Set<Property> properties = Beans.getProperties(valueClass, config.beanProperties, config.privateFields, config);
+		@Det Set<@Det Property> properties = Beans.getProperties(valueClass, config.beanProperties, config.privateFields, config);
 		emitter.emit(new MappingStartEvent(anchor, tag, !showTag, false));
 		for (Property property : properties) {
 			try {
@@ -305,7 +308,7 @@ public class YamlWriter {
 
 		// Value must be an object.
 
-		Set<Property> properties = Beans.getProperties(object.getClass(), config.beanProperties, config.privateFields, config);
+		@Det Set<@Det Property> properties = Beans.getProperties(object.getClass(), config.beanProperties, config.privateFields, config);
 		for (Property property : properties) {
 			if (Beans.isScalar(property.getType())) continue;
 			Object propertyValue;
