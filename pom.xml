@@ -89,6 +89,7 @@
 						<annotationProcessor>org.checkerframework.checker.determinism.DeterminismChecker</annotationProcessor>
 					</annotationProcessors>
 					<compilerArgs>
+						<arg>-AusePolyDefault</arg>
 						<!-- <arg>-Awarns</arg> --> <!-- -Awarns turns type-checking errors into warnings. -->
 					</compilerArgs>
 				</configuration>
@@ -247,6 +248,7 @@
 								<annotationProcessor>org.checkerframework.checker.determinism.DeterminismChecker</annotationProcessor>
 							</annotationProcessors>
 							<compilerArgs>
+								<arg>-AusePolyDefault</arg>
 								<!-- <arg>-Awarns</arg> --> <!-- -Awarns turns type-checking errors into warnings. -->
 							</compilerArgs>
 						</configuration>
